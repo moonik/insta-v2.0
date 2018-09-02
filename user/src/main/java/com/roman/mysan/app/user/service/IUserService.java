@@ -1,18 +1,17 @@
 package com.roman.mysan.app.user.service;
 
 import com.roman.mysan.app.user.domain.UserAccount;
-import com.roman.mysan.app.user.domain.VerificationToken;
 import com.roman.mysan.app.user.dto.UserDTO;
+
+import javax.naming.AuthenticationException;
 
 public interface IUserService {
 
-    UserAccount createNewAccount(UserDTO userDTO);
+    void createNewAccount(UserDTO userDTO);
+
+    void resendEmailWithToken(String oldToken);
 
     void saveRegisteredUser(UserAccount user);
 
-    UserAccount getUser(String token);
-
-    void createVerificationToken(UserAccount user, String token);
-
-    VerificationToken getVerificationToken(String VerificationToken);
+    void confirmRegistration(String token) throws AuthenticationException;
 }

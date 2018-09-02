@@ -3,23 +3,39 @@ package com.roman.mysan.app.user.service;
 import com.roman.mysan.app.user.domain.UserAccount;
 import com.roman.mysan.app.user.domain.VerificationToken;
 import com.roman.mysan.app.user.repository.UserAccountRepository;
-import com.roman.mysan.app.user.repository.VerificationTokenRepository;
 import com.roman.mysan.app.user.dto.UserDTO;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+
+import javax.naming.AuthenticationException;
+import java.util.Calendar;
+import java.util.UUID;
 
 import static com.roman.mysan.app.user.asm.UserAccountAssembler.convetToEntity;
 
 @Service
 @AllArgsConstructor
+@Log
 public class UserAccountService implements IUserService {
 
     private final UserAccountRepository userAccountRepository;
-    private final VerificationTokenRepository tokenRepository;
+    private final VerificationTokenService tokenService;
+    private final MailSenderService mailSenderService;
 
     @Override
-    public UserAccount createNewAccount(UserDTO userDTO) {
-        return userAccountRepository.save(convetToEntity(userDTO));
+    public void createNewAccount(UserDTO userDTO) {
+        var user = userAccountRepository.save(convetToEntity(userDTO));
+        var tokenValue = generateToken();
+        tokenService.createVerificationToken(user, tokenValue);
+        mailSenderService.sendEmail(user, tokenValue);
+    }
+
+    @Override
+    public void resendEmailWithToken(String oldToken) {
+        var tokenValue = generateToken();
+        var newToken = tokenService.updateToken(oldToken, tokenValue);
+        mailSenderService.sendEmail(newToken.getUser(), tokenValue);
     }
 
     @Override
@@ -28,17 +44,28 @@ public class UserAccountService implements IUserService {
     }
 
     @Override
-    public UserAccount getUser(String token) {
-        return tokenRepository.findByToken(token).getUser();
+    public void confirmRegistration(String token) throws AuthenticationException {
+        log.info("Verifying token...");
+
+        VerificationToken verificationToken = tokenService.getVerificationToken(token);
+        if (verificationToken == null) {
+            log.info("Invalid token");
+            throw new AuthenticationException("Invalid token");
+        }
+
+        UserAccount user = verificationToken.getUser();
+        Calendar cal = Calendar.getInstance();
+        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            log.info("Expired token");
+            throw new AuthenticationException("Expired token");
+        }
+        user.setEnabled(true);
+        saveRegisteredUser(user);
+
+        log.info("Successful confirmation of registration.");
     }
 
-    @Override
-    public void createVerificationToken(UserAccount user, String token) {
-        tokenRepository.save(new VerificationToken(token, user));
-    }
-
-    @Override
-    public VerificationToken getVerificationToken(String token) {
-        return tokenRepository.findByToken(token);
+    private static String generateToken() {
+        return UUID.randomUUID().toString();
     }
 }
