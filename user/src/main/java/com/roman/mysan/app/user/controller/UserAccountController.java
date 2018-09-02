@@ -1,6 +1,6 @@
 package com.roman.mysan.app.user.controller;
 
-import com.roman.mysan.app.user.service.IUserService;
+import com.roman.mysan.app.user.service.UserAccountService;
 import com.roman.mysan.app.user.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
@@ -15,20 +15,20 @@ import javax.validation.Valid;
 @Log
 public class UserAccountController {
 
-    private final IUserService userService;
+    private final UserAccountService userAccountService;
 
     @PostMapping("/create")
     public void create(@Valid @RequestBody UserDTO userDTO) {
-        userService.createNewAccount(userDTO);
+        userAccountService.createNewAccount(userDTO);
     }
 
     @GetMapping("/registration-confirmation")
     public void confirmRegistration(@RequestParam("token") String token) throws AuthenticationException {
-        userService.confirmRegistration(token);
+        userAccountService.confirmRegistration(token);
     }
 
     @PostMapping("/resend-token")
     public void resendToken(@RequestParam("token") String token) {
-        userService.resendEmailWithToken(token);
+        userAccountService.resendEmailWithToken(token);
     }
 }

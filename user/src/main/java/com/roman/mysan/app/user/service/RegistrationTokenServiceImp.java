@@ -1,31 +1,31 @@
 package com.roman.mysan.app.user.service;
 
 import com.roman.mysan.app.user.domain.UserAccount;
-import com.roman.mysan.app.user.domain.VerificationToken;
-import com.roman.mysan.app.user.repository.VerificationTokenRepository;
+import com.roman.mysan.app.user.domain.RegistrationToken;
+import com.roman.mysan.app.user.repository.RegistrationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class TokenServiceImp implements VerificationTokenService {
+public class RegistrationTokenServiceImp implements RegistrationTokenService {
 
-    private final VerificationTokenRepository tokenRepository;
+    private final RegistrationTokenRepository tokenRepository;
 
     @Override
-    public VerificationToken createVerificationToken(UserAccount user, String token) {
-        var verificationToken = new VerificationToken(token, user);
+    public RegistrationToken createVerificationToken(UserAccount user, String token) {
+        var verificationToken = new RegistrationToken(token, user);
         verificationToken.setExpDate();
         return tokenRepository.save(verificationToken);
     }
 
     @Override
-    public VerificationToken getVerificationToken(String token) {
+    public RegistrationToken getVerificationToken(String token) {
         return tokenRepository.findByToken(token);
     }
 
     @Override
-    public VerificationToken updateToken(String oldToken, String newToken) {
+    public RegistrationToken updateToken(String oldToken, String newToken) {
         var token = tokenRepository.findByToken(oldToken);
         token.setExpDate();
         token.setToken(newToken);

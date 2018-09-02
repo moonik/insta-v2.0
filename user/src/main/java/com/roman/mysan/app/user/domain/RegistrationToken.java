@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
-public class VerificationToken {
+public class RegistrationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class VerificationToken {
         this.expiryDate = new Date(cal.getTime().getTime());
     }
 
-    public VerificationToken(String token, UserAccount user) {
+    public RegistrationToken(String token, UserAccount user) {
         this.token = token;
         this.user = user;
     }
