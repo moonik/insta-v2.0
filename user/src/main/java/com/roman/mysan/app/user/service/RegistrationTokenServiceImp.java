@@ -15,7 +15,7 @@ public class RegistrationTokenServiceImp implements RegistrationTokenService {
     @Override
     public RegistrationToken createVerificationToken(UserAccount user, String token) {
         var verificationToken = new RegistrationToken(token, user);
-        verificationToken.setExpDate();
+        verificationToken.setExpiryDate();
         return tokenRepository.save(verificationToken);
     }
 
@@ -27,7 +27,7 @@ public class RegistrationTokenServiceImp implements RegistrationTokenService {
     @Override
     public RegistrationToken updateToken(String oldToken, String newToken) {
         var token = tokenRepository.findByToken(oldToken);
-        token.setExpDate();
+        token.setExpiryDate();
         token.setToken(newToken);
         return tokenRepository.save(token);
     }

@@ -26,7 +26,7 @@ public class RegistrationToken {
 
     private Date expiryDate;
 
-    public void setExpDate() {
+    public void setExpiryDate() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Timestamp(cal.getTime().getTime()));
         cal.add(Calendar.MINUTE, 1440); //24 hours
