@@ -1,4 +1,4 @@
-package com.roman.mysan.app.security;
+package com.roman.mysan.app.security.jwt;
 
 import com.roman.mysan.app.user.domain.UserAccount;
 import org.springframework.security.core.GrantedAuthority;

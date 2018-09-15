@@ -1,4 +1,4 @@
-package com.roman.mysan.app.security;
+package com.roman.mysan.app.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

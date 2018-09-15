@@ -1,5 +1,9 @@
 package com.roman.mysan.app.security;
 
+import com.roman.mysan.app.security.jwt.JwtAuthenticationRequest;
+import com.roman.mysan.app.security.jwt.JwtAuthenticationResponse;
+import com.roman.mysan.app.security.jwt.JwtTokenUtil;
+import com.roman.mysan.app.security.jwt.JwtUserDetailsServiceImpl;
 import com.roman.mysan.app.user.repository.UserAccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.roman.mysan.app.security.JwtAuthenticationTokenFilter.HEADER_STRING;
+import static com.roman.mysan.app.security.jwt.JwtAuthenticationTokenFilter.HEADER_STRING;
 
 @RestController
 @RequestMapping("/api/insta")
 @AllArgsConstructor
 public class AuthenticationController {
 
-    protected UserAccountRepository userAccountRepository;
-
-    protected AuthenticationManager authenticationManager;
-
-    protected JwtTokenUtil jwtTokenUtil;
-
-    protected JwtUserDetailsServiceImpl jwtUserDetailsService;
+    private final UserAccountRepository userAccountRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtUserDetailsServiceImpl jwtUserDetailsService;
 
     @PostMapping("/auth")
     public ResponseEntity createAuthenticationToken(

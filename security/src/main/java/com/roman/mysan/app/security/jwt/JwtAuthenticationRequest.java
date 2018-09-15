@@ -1,4 +1,4 @@
-package com.roman.mysan.app.security;
+package com.roman.mysan.app.security.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

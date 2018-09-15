@@ -1,4 +1,4 @@
-package com.roman.mysan.app.security;
+package com.roman.mysan.app.security.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

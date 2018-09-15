@@ -1,5 +1,7 @@
 package com.roman.mysan.app.security;
 
+import com.roman.mysan.app.security.jwt.JwtAuthenticationEntryPoint;
+import com.roman.mysan.app.security.jwt.JwtAuthenticationTokenFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
