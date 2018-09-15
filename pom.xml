@@ -9,7 +9,8 @@
     <modules>
 		<module>user</module>
 		<module>app</module>
-	</modules>
+        <module>security</module>
+    </modules>
     <packaging>pom</packaging>
 
 	<name>insta</name>
@@ -19,7 +20,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>10</java.version>
 		<spring-boot.version>2.0.4.RELEASE</spring-boot.version>
-		<start-class>InstaApplication</start-class>
 	</properties>
 
     <dependencyManagement>
@@ -34,6 +34,11 @@
 				<artifactId>user</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+				<groupId>com.roman.mysan</groupId>
+				<artifactId>security</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -41,13 +46,18 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.4.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 			<version>${spring-boot.version}</version>
 		</dependency>
 		<dependency>
@@ -69,6 +79,19 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring-boot.version}</version>
+				<configuration>
+					<mainClass>com.roman.mysan.app.InstaApplication</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>exec</classifier>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

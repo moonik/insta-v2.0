@@ -1,8 +1,10 @@
 package com.roman.mysan.app.user.service;
 
+import com.roman.mysan.app.user.domain.AuthorityName;
 import com.roman.mysan.app.user.domain.UserAccount;
 import com.roman.mysan.app.user.domain.RegistrationToken;
 import com.roman.mysan.app.user.exception.UserAlreadyExistsException;
+import com.roman.mysan.app.user.repository.AuthorityRepository;
 import com.roman.mysan.app.user.repository.UserAccountRepository;
 import com.roman.mysan.app.user.dto.UserDTO;
 import lombok.AllArgsConstructor;
@@ -10,10 +12,11 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.UUID;
 
-import static com.roman.mysan.app.user.asm.UserAccountAssembler.convetToEntity;
+import static com.roman.mysan.app.user.asm.UserAccountAssembler.convertToEntity;
 
 @Service
 @AllArgsConstructor
@@ -23,11 +26,13 @@ public class UserAccountServiceImp implements UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final RegistrationTokenService tokenService;
     private final MailSenderService mailSenderService;
+    private final AuthorityRepository authorityRepository;
 
     @Override
     public void createNewAccount(UserDTO userDTO) {
         if (!userAccountRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-            var user = userAccountRepository.save(convetToEntity(userDTO));
+            var user = userAccountRepository.save(convertToEntity(userDTO));
+            user.setAuthorities(Arrays.asList(authorityRepository.findByName(AuthorityName.ROLE_USER)));
             var tokenValue = generateToken();
             tokenService.createVerificationToken(user, tokenValue);
             mailSenderService.sendEmail(user, tokenValue);
