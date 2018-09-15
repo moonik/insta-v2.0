@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class MailSenderService {
 
     private final JavaMailSender javaMailSender;
-    private final static String VERIFICATION_URL = "http://localhost:8080/api/user/registration-confirmation?token=";
+    private final static String VERIFICATION_URL = "http://localhost:8080/api/insta/user/registration-confirmation?token=";
 
     @Async
     public void sendEmail(UserAccount user, String token) throws MailException {

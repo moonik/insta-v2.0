@@ -10,7 +10,7 @@ import javax.naming.AuthenticationException;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/insta/user")
 @AllArgsConstructor
 @Log
 public class UserAccountController {
