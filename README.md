@@ -1,1 +1,1 @@
-# insta-v2.0
+This is a new version of my old project -> [My first project](https://github.com/moonik/insta).
